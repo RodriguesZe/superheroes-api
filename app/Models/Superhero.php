@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Superhero extends BaseModel
 {
     public $table = 'superheroes';
@@ -25,4 +27,24 @@ class Superhero extends BaseModel
     protected $casts = [
         'firstAppearance' => 'datetime',
     ];
+
+    /**
+     * The abilities that a superhero has.
+     *
+     * @return HasMany
+     */
+    public function abilities(): HasMany
+    {
+        return $this->hasMany(SuperheroAbility::class, 'idSuperhero');
+    }
+
+    /**
+     * The team affiliations that a superhero has.
+     *
+     * @return HasMany
+     */
+    public function affiliations(): HasMany
+    {
+        return $this->hasMany(TeamAffiliate::class, 'idSuperhero');
+    }
 }
