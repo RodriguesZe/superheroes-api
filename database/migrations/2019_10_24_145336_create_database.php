@@ -13,7 +13,7 @@ class CreateDatabase extends Migration
      */
     public function up(): void
     {
-        Schema::create('superheros', function (Blueprint $table) {
+        Schema::create('superheroes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('realName');
             $table->string('heroName')->unique();
@@ -37,19 +37,21 @@ class CreateDatabase extends Migration
         });
 
         Schema::create('superhero_abilities', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->uuid('idSuperhero');
             $table->uuid('idAbility');
 
-            $table->foreign('idSuperhero')->references('id')->on('superheros');
+            $table->foreign('idSuperhero')->references('id')->on('superheroes');
             $table->foreign('idAbility')->references('id')->on('abilities');
         });
 
         Schema::create('team_affiliations', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->uuid('idTeam');
             $table->uuid('idSuperhero');
 
             $table->foreign('idTeam')->references('id')->on('teams');
-            $table->foreign('idSuperhero')->references('id')->on('superheros');
+            $table->foreign('idSuperhero')->references('id')->on('superheroes');
         });
     }
 
@@ -64,6 +66,6 @@ class CreateDatabase extends Migration
         Schema::dropIfExists('superhero_abilities');
         Schema::dropIfExists('teams');
         Schema::dropIfExists('abilities');
-        Schema::dropIfExists('superheros');
+        Schema::dropIfExists('superheroes');
     }
 }
