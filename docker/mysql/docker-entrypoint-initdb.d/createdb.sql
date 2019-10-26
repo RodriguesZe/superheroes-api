@@ -17,6 +17,6 @@
 #
 
 
-CREATE DATABASE IF NOT EXISTS `superheros_db` COLLATE 'utf8_general_ci';
-GRANT ALL ON `superheros_db`.* TO 'superheros_db'@'%' IDENTIFIED BY 'sh_db_2019';
+CREATE DATABASE IF NOT EXISTS `superheroes_db` COLLATE 'utf8_general_ci';
+GRANT ALL ON `superheroes_db`.* TO 'superheroes_db'@'%' IDENTIFIED BY 'sh_db_2019';
 FLUSH PRIVILEGES ;
