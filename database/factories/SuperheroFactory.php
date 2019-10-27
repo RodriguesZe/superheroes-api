@@ -22,6 +22,6 @@ $factory->define(Superhero::class, function (Faker $faker) {
         'realName' => $faker->name,
         'heroName' => $faker->unique()->userName,
         'publisher' => $faker->name,
-        'firstAppearance' => $faker->date(),
+        'firstAppearance' => $faker->dateTime,
     ];
 });

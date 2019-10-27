@@ -28,4 +28,16 @@ class SuperheroesService
     {
         return $this->superheroModel->get();
     }
+
+    /**
+     * Show the desired superhero.
+     *
+     * @param string $id
+     *
+     * @return mixed
+     */
+    public function show(string $id)
+    {
+        return $this->superheroModel->findOrFail($id);
+    }
 }

@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/superheroes', 'SuperheroesController@index')->name('superheroes.index');
+Route::get('/superheroes/{id}', 'SuperheroesController@show')->name('superheroes.show');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
