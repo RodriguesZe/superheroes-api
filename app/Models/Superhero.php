@@ -28,6 +28,13 @@ class Superhero extends BaseModel
         'firstAppearance' => 'datetime',
     ];
 
+    public $updateRules = [
+        'realName' => ['string', 'max:255'],
+        'heroName' => ['string', 'max:255', 'unique:users'],
+        'publisher' => ['string', 'max:255'],
+        'firstAppearance' => ['date'],
+    ];
+
     /**
      * The abilities that a superhero has.
      *

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Superheroes as SuperheroesResource;
 use App\Services\Superheroes\SuperheroesService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Validation\ValidationException;
 
 class SuperheroesController
 {
@@ -48,6 +50,37 @@ class SuperheroesController
             $result = $this->service->show($id);
 
             return SuperheroesResource::make($result);
+        }
+        catch( ModelNotFoundException $exception )
+        {
+            return response()->json(['message' => 'Superhero not found.'], 404);
+        }
+    }
+
+    /**
+     * Update the desired superhero.
+     *
+     * @param Request $request
+     * @param string  $id
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update( Request $request, string $id ): \Illuminate\Http\JsonResponse
+    {
+        try
+        {
+            $result = $this->service->update($id, $request->toArray());
+
+            return response()->json(null, 204);
+        }
+        catch (ValidationException $validationException)
+        {
+            $message = [
+                'message'   => 'Validation failed.',
+                'errors'    => $validationException->errors(),
+            ];
+
+            return response()->json($message, 422);
         }
         catch( ModelNotFoundException $exception )
         {

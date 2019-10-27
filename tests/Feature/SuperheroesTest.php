@@ -122,6 +122,67 @@ class SuperheroesTest extends TestCase
     }
 
     /**
+     * Edit a superhero.
+     */
+    public function testEditSuperhero(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        $url = route('superheroes.update', [$superhero->id]);
+
+        $payload = [
+            'realName'  => 'New name',
+        ];
+
+        $response = $this->put($url, $payload);
+
+        $response->assertStatus(204);
+    }
+
+    /**
+     * Edit a superhero with invalid data.
+     */
+    public function testEditSuperheroWithInvalidData(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        $url = route('superheroes.update', [$superhero->id]);
+
+        $payload = [
+            'realName'  => 123,
+        ];
+
+        $response = $this->put($url, $payload);
+
+        $response->assertStatus(422)
+            ->assertJson([
+                'message' => 'Validation failed.',
+                'errors' => [
+                    'realName'  => ['The real name must be a string.']
+                ]
+            ]);
+    }
+
+    /**
+     * Edit a superhero passing an invalid superhero id.
+     */
+    public function testEditSuperheroWithInvalidId(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        $url = route('superheroes.update', [$this->fakeUUId]);
+
+        $payload = [
+            'realName'  => 'New name',
+        ];
+
+        $response = $this->put($url, $payload);
+
+        $response->assertStatus(404)
+            ->assertJson(self::$notFoundError);
+    }
+
+    /**
      * Add a new superhero to the database, with all its characteristics.
      *
      * @return Superhero

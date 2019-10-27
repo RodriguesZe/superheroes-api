@@ -3,6 +3,7 @@
 namespace App\Services\Superheroes;
 
 use App\Models\Superhero;
+use Illuminate\Support\Facades\Validator;
 
 class SuperheroesService
 {
@@ -39,5 +40,24 @@ class SuperheroesService
     public function show(string $id)
     {
         return $this->superheroModel->findOrFail($id);
+    }
+
+    /**
+     * Update the desired superhero.
+     *
+     * @param string $id
+     * @param array  $data
+     *
+     * @return mixed
+     */
+    public function update(string $id, array $data)
+    {
+        $rules = $this->superheroModel->updateRules;
+
+        $validator = Validator::make($data, $rules);
+        $validator->validate();
+        
+        $superhero = $this->show($id);
+        return $superhero->update($data);
     }
 }
