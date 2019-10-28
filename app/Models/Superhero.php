@@ -30,7 +30,7 @@ class Superhero extends BaseModel
 
     public $updateRules = [
         'realName' => ['string', 'max:255'],
-        'heroName' => ['string', 'max:255', 'unique:users'],
+        'heroName' => ['string', 'max:255'],
         'publisher' => ['string', 'max:255'],
         'firstAppearance' => ['date'],
     ];
