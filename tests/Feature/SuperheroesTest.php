@@ -78,7 +78,7 @@ class SuperheroesTest extends TestCase
     protected $fakeUUId = '22d19587b28e4f55a034476d7a10d0fa';
 
     /**
-     * A basic test example.
+     * List all superheroes.
      *
      * @return void
      */
@@ -89,6 +89,60 @@ class SuperheroesTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonStructure(self::$expectedStructure);
+    }
+
+    /**
+     * List all superheroes passing valid parameters.
+     *
+     * @return void
+     */
+    public function testSuperheroesListWithValidParameters(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        $url = route('superheroes.index', ['name' => $superhero->heroName]);
+        $response = $this->get($url);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(self::$expectedStructure)
+            ->assertJsonFragment([
+                'heroName'  => $superhero->heroName,
+                'realName'  => $superhero->realName,
+                'publisher' => $superhero->publisher,
+            ]);
+    }
+
+    /**
+     * List all superheroes passing invalid parameters.
+     *
+     * @return void
+     */
+    public function testSuperheroesListWithInvalidParameters(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        // note: the accepted parameter is "name", not "heroName".
+        $url = route('superheroes.index', ['heroName' => $superhero->heroName]);
+        $response = $this->get($url);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(self::$expectedStructure);
+    }
+
+    /**
+     * List all superheroes passing invalid parameters.
+     *
+     * @return void
+     */
+    public function testSuperheroesListWithNoResults(): void
+    {
+        $superhero = $this->createCompleteSuperhero();
+
+        $url = route('superheroes.index', ['name' => 'wrong-name']);
+        $response = $this->get($url);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['data' => []]);
     }
 
     /**

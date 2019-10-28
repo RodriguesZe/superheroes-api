@@ -27,11 +27,15 @@ class SuperheroesController
     }
 
     /**
+     * List all superheroes (includes filters).
+     *
+     * @param Request $request
+     *
      * @return AnonymousResourceCollection
      */
-    public function index(): AnonymousResourceCollection
+    public function index(Request $request): AnonymousResourceCollection
     {
-        $result = $this->service->index();
+        $result = $this->service->index($request->all());
 
         return SuperheroesResource::collection($result);
     }

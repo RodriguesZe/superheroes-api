@@ -3,6 +3,7 @@
 namespace App\Services\Superheroes;
 
 use App\Models\Superhero;
+use App\Services\Search\SearchService;
 use Illuminate\Support\Facades\Validator;
 
 class SuperheroesService
@@ -13,21 +14,30 @@ class SuperheroesService
     protected $superheroModel;
 
     /**
+     * @var SearchService
+     */
+    protected $searchService;
+
+    /**
      * SuperheroesService constructor.
      *
-     * @param Superhero $superheroModel
+     * @param Superhero     $superheroModel
+     * @param SearchService $searchService
      */
-    public function __construct( Superhero $superheroModel )
+    public function __construct( Superhero $superheroModel, SearchService $searchService )
     {
         $this->superheroModel = $superheroModel;
+        $this->searchService = $searchService;
     }
 
     /**
+     * @param array $filters
+     *
      * @return mixed
      */
-    public function index()
+    public function index(array $filters = [])
     {
-        return $this->superheroModel->get();
+        return \count($filters) === 0 ? $this->superheroModel->get() : $this->searchService->index($filters);
     }
 
     /**
