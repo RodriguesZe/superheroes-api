@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Validation\ValidationException;
 
-class SuperheroesController
+class SuperheroesController extends BaseController
 {
     /**
      * @var SuperheroesService
@@ -45,7 +45,7 @@ class SuperheroesController
      *
      * @param string $id
      *
-     * @return SuperheroesResource|array
+     * @return SuperheroesResource|\Illuminate\Http\JsonResponse
      */
     public function show(string $id)
     {
@@ -57,7 +57,7 @@ class SuperheroesController
         }
         catch( ModelNotFoundException $exception )
         {
-            return response()->json(['message' => 'Superhero not found.'], 404);
+            return $this->returnErrorResponse(404, 'Superhero not found.');
         }
     }
 
@@ -79,16 +79,11 @@ class SuperheroesController
         }
         catch (ValidationException $validationException)
         {
-            $message = [
-                'message'   => 'Validation failed.',
-                'errors'    => $validationException->errors(),
-            ];
-
-            return response()->json($message, 422);
+            return $this->returnValidationErrorResponse($validationException->errors());
         }
         catch( ModelNotFoundException $exception )
         {
-            return response()->json(['message' => 'Superhero not found.'], 404);
+            return $this->returnErrorResponse(404, 'Superhero not found.');
         }
     }
 }
