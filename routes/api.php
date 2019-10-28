@@ -13,10 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/', 'WelcomeController@index')->name('welcome.index');
 Route::get('/superheroes', 'SuperheroesController@index')->name('superheroes.index');
 Route::get('/superheroes/{id}', 'SuperheroesController@show')->name('superheroes.show');
 Route::put('/superheroes/{id}', 'SuperheroesController@update')->name('superheroes.update');
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
